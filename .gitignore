@@ -13,3 +13,9 @@ dist
 /.project
 /RUNNING_PID
 /.settings
+activator
+activator-launch-1.3.5.jar
+activator.bat
+project
+build.sbt
+bin
