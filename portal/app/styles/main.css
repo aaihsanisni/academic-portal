@@ -1,0 +1,103 @@
+.base-header{
+  background: #F5F5F5;
+
+  font-weight: 500;
+  color: #563d7c;
+
+  .active{
+    background: #fff;
+  }
+
+  border-bottom: 1px solid #ddd;
+}
+
+.base{
+  margin-top : 100px;
+  
+
+  .charts{
+    >div{
+      height: 300px;
+      margin-top: 70px;
+    }
+  }
+
+}
+
+.provider-border{
+  border: 2px solid rgb(230, 92, 46);
+}
+
+thead{
+  background: white;
+}
+
+.users{
+  #userInfo{
+    margin-top: 0px !important;
+  }
+}
+
+.MT10{
+  margin-top: 10px;
+}
+
+.MT20{
+  margin-top: 20px;
+}
+
+.MR10{
+  margin-right: 10px;
+}
+
+.MR20{
+  margin-right: 20px;
+}
+
+.cartman{
+  height: 200px;
+}
+
+.PAD8{
+  padding: 8px;
+}
+
+.hand{
+  cursor: pointer;
+}
+
+.label{
+  font-size: 100% !important;
+}
+
+.text-center{
+  text-align: center;
+}
+.navbar-toggle .icon-bar{
+  background-color: #563d7c;  
+}
+
+.twt-scr-name{
+  .account-trend{
+    visibility: hidden;
+  }
+  &:hover{
+    .account-trend {
+      visibility: visible;
+    }
+  }
+}
+
+.modal-lg{
+  width: 1024px !important;
+}
+
+.color-box {
+    float: left;
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(0,0,0,.2);
+}

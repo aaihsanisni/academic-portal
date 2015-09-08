@@ -4,9 +4,12 @@ import java.net.UnknownHostException;
 
 import play.*;
 import play.data.Form;
+import play.data.DynamicForm;
+
 import play.mvc.*;
 import views.html.*;
 import akka.io.Tcp.Bind;
+import play.data.validation.Constraints;
 
 import com.mongodb.*;
 //import com.mongodb.client.MongoDatabase;
@@ -15,6 +18,7 @@ import com.mongodb.*;
 public class Students extends Controller {
 	
 	public static class AddForm {
+
 		public String name;
 		public String dept;
 	};
@@ -82,7 +86,6 @@ public class Students extends Controller {
     // Params: name and dept
     public static Result add() {
     	Form<AddForm> params = Form.form(AddForm.class).bindFromRequest();
-    	
     	if (params.hasErrors()) {
     		Logger.error("Bad Request");
     	    return badRequest();

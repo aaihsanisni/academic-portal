@@ -5,7 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index()
 
-GET /students/view                  controllers.Students.view()
+GET /students/                  controllers.Students.view()
 GET /students/viewStudent			controllers.Students.viewStudent()
 GET /students/add                   controllers.Students.add()
 GET /students/delete                controllers.Students.delete()
