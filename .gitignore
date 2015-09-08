@@ -8,5 +8,4 @@ dist
 activator
 activator-launch-1.3.5.jar
 activator.bat
-build.sbt
 bin
