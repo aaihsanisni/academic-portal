@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="sbt-coffeescript">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/project/target/coffeescript/sbt-coffeescript.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

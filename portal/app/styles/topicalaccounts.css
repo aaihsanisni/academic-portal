@@ -1,0 +1,7 @@
+#tblAccounts {
+    width: 100%;
+}
+#tblAccounts th { text-align: left; }
+#tblAccounts tr:nth-child(even) {
+    background-color: #FEFEFE;
+}

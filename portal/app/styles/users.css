@@ -1,0 +1,20 @@
+#tblUsers {
+    width: 100%;
+}
+#tblUsers th { text-align: left; }
+#tblUsers tr:nth-child(even) {
+    background-color: #FEFEFE;
+}
+
+#tblUsers a {
+    cursor: pointer;
+}
+
+#tblUsers a:hover {
+    color: #0000FF;
+    text-decoration: underline; 
+}
+
+#userInfo {
+    margin-top: 60px;
+}
