@@ -18,7 +18,7 @@ import com.mongodb.*;
 public class Students extends Controller {
 	
 	public static class AddForm {
-
+		public String entryno;
 		public String name;
 		public String dept;
 	};
@@ -26,7 +26,10 @@ public class Students extends Controller {
 	public static class ViewStudentForm {
 		public String name;
 	}
-	
+
+	public static class DeleteForm {
+		public String entryno;
+	}
 	// Returns all the students and their details
     public static Result view() {
     	MongoClient mongoClient = null;
@@ -43,8 +46,9 @@ public class Students extends Controller {
     	DBCursor cur = studentCol.find();
     	while(cur.hasNext()) {
     		BasicDBObject obj = (BasicDBObject) cur.next();
-    		BasicDBObject toAdd = new BasicDBObject("name", obj.get("name"))
-    			.append("dept", obj.get("dept"));
+    		BasicDBObject toAdd = new BasicDBObject("entryno", obj.get("entryno"))
+    				.append("name", obj.get("name"))
+					.append("dept", obj.get("dept"));
     		returnList.add(toAdd);
     		Logger.info("Adding " + toAdd);
     	}
@@ -91,7 +95,7 @@ public class Students extends Controller {
     	    return badRequest();
     	}
     	AddForm addData = params.get();
-    	Logger.info("Name:" + addData.name + " Dept:" + addData.dept);
+    	Logger.info("Entry" + addData.entryno + "Name:" + addData.name + " Dept:" + addData.dept);
     	
     	MongoClient mongoclient = null;
     	try {
@@ -104,21 +108,24 @@ public class Students extends Controller {
     	
     	DB db = mongoclient.getDB("acad");
     	DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.students"));
-    	BasicDBObject obj = new BasicDBObject().append("name", addData.name).
-    			append("dept", addData.dept);
+    	BasicDBObject obj = new BasicDBObject().append("entryno", addData.entryno)
+				.append("name", addData.name)
+    			.append("dept", addData.dept);
     	//check entry before inserting...
     	col.insert(obj);
+
+		// Return all the items that have been added.
     	return ok();
     }
     
     public static Result delete() {
-    	Form<ViewStudentForm> params = Form.form(ViewStudentForm.class).bindFromRequest();
+    	Form<DeleteForm> params = Form.form(DeleteForm.class).bindFromRequest();
     	if (params.hasErrors()) {
     		Logger.error("Bad Request");
     		return badRequest();
     	}
-    	ViewStudentForm formData = params.get();
-    	String studentID = formData.name;
+    	DeleteForm formData = params.get();
+    	String studentID = formData.entryno;
     	
     	MongoClient mongoclient = null;
     	try {
@@ -131,7 +138,7 @@ public class Students extends Controller {
     	
     	DB db = mongoclient.getDB("acad");
     	DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.students"));
-    	col.remove(new BasicDBObject("name",studentID));
+    	col.remove(new BasicDBObject("entryno",studentID));
     	return ok("Success");
     }
     
