@@ -61,15 +61,19 @@ angular.module('portalApp')
 
   		});
 
-	    optionModal.result.then(function (toDelete) {
-	     httpService.deleteStudent(toDelete.entryno)
+	    optionModal.result.then(function (toChange) {
+	    	if (toChange.option === 1) {
+		     httpService.deleteStudent(student.entryno)
 	      	.then(function(resp) {
 	      		// $scope.tableData = resp;
 	      		console.log("Refreshing users");
 	      		$scope.view();
 
 	      	});
-	    	console.log("Deleting " + toDelete.name);
+	    	console.log("Deleting " + student.name);
+	    	}
+	    	else 
+	    		console.log("deleteStudent");
 	    }, function () {
 	      console.log('Modal dismissed at: ' + new Date());
 	    });
@@ -79,12 +83,12 @@ angular.module('portalApp')
   angular.module('portalApp')
   .controller('addModalCtrl', function ($scope, $modalInstance) {
 
-
   $scope.ok = function (addStudent) {
     $modalInstance.close(addStudent);
   };
 
   $scope.cancel = function () {
+
     $modalInstance.dismiss('cancel');
   };
 });
@@ -93,11 +97,22 @@ angular.module('portalApp')
   .controller('deleteModalCtrl', function ($scope, $modalInstance, itemSelected) {
 
   $scope.itemSelected = itemSelected;
+  $scope.option = 1;
+  console.log("option is " + $scope.option);
 
-  $scope.ok = function () {
-    $modalInstance.close(itemSelected);
+  $scope.update = function (student) {
+  	var resp = [];
+  	console.log("shit");
+  	resp.option = 0;
+  	resp.name = student.name;
+  	$modalInstance.close(resp);
   };
 
+  $scope.delete = function() {
+  	var resp = [];
+  	resp.option = 1;
+  	$modalInstance.close(resp);
+  }
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };

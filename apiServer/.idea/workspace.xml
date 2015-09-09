@@ -58,8 +58,8 @@
       <file leaf-file-name="Students.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/Students.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6511628" vertical-offset="1708" max-vertical-offset="2310">
-              <caret line="140" column="40" selection-start-line="140" selection-start-column="40" selection-end-line="140" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.35215947" vertical-offset="1708" max-vertical-offset="2310">
+              <caret line="128" column="8" selection-start-line="128" selection-start-column="8" selection-end-line="128" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -541,8 +541,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/Students.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6511628" vertical-offset="1708" max-vertical-offset="2310">
-          <caret line="140" column="40" selection-start-line="140" selection-start-column="40" selection-end-line="140" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.35215947" vertical-offset="1708" max-vertical-offset="2310">
+          <caret line="128" column="8" selection-start-line="128" selection-start-column="8" selection-end-line="128" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
