@@ -46,7 +46,7 @@
           <a href="/#/courses">Courses</a>
         </li>
         <li>
-          <a href="/#/faulty">Faculty</a>
+          <a href="/#/faculty">Faculty</a>
         </li>
         <li>
           <a href="/#/admin">Admin</a>
@@ -78,8 +78,6 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-messages/angular-messages.js"></script>
@@ -87,13 +85,21 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/services/httpService.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/students.js"></script>
+        <script src="scripts/controllers/courses.js"></script>
+        <script src="scripts/controllers/faculty.js"></script>
+        <script src="scripts/controllers/admin.js"></script>
         <!-- endbuild -->
 </body>
 </html>

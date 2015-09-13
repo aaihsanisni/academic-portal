@@ -17,7 +17,9 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ui.bootstrap',
+
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -31,10 +33,25 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
-      .when('/main', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
+      .when('/students', {
+        templateUrl: 'views/students.html',
+        controller: 'StudentsCtrl',
+        controllerAs: 'students'
+      })
+      .when('/courses', {
+        templateUrl: 'views/courses.html',
+        controller: 'CoursesCtrl',
+        controllerAs: 'courses'
+      })
+      .when('/faculty', {
+        templateUrl: 'views/faculty.html',
+        controller: 'FacultyCtrl',
+        controllerAs: 'faculty'
+      })
+      .when('/admin', {
+        templateUrl: 'views/admin.html',
+        controller: 'AdminCtrl',
+        controllerAs: 'admin'
       })
       .otherwise({
         redirectTo: '/'
