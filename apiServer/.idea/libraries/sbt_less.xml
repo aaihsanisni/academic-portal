@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="sbt-less">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/project/target/less/sbt-less.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
