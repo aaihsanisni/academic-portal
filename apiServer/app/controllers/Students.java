@@ -24,7 +24,7 @@ public class Students extends Controller {
 	};
 	
 	public static class ViewStudentForm {
-		public String name;
+		public String entryno;
 	}
 
 	public static class DeleteForm {
@@ -54,15 +54,16 @@ public class Students extends Controller {
     		return badRequest();
     	}
     	ViewStudentForm formData = params.get();
-    	String studentID = formData.name;
+    	String studentID = formData.entryno;
 
     	DB db =Application.acadDB();
     	DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.students"));
-    	DBCursor cursor = col.find(new BasicDBObject("name", studentID));
+    	DBCursor cursor = col.find(new BasicDBObject("entryno", studentID));
     	BasicDBList retList = new BasicDBList();
     	while(cursor.hasNext()) {
     		BasicDBObject obj = (BasicDBObject) cursor.next();
-    		retList.add(new BasicDBObject("name", obj.get("name"))
+    		retList.add(new BasicDBObject("entryno", obj.get("entryno"))
+					.append("name", obj.get("name"))
     				.append("dept", obj.get("dept")));
     	}
     	

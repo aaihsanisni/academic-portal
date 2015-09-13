@@ -11,5 +11,12 @@ GET /students/add                   controllers.Students.add()
 GET /students/delete                controllers.Students.delete()
 GET /students/update                controllers.Students.update()
 
+GET /faculty/                  controllers.Faculty.view()
+GET /faculty/viewFaculty			controllers.Faculty.viewFaculty()
+GET /faculty/add                   controllers.Faculty.add()
+GET /faculty/delete                controllers.Faculty.delete()
+GET /faculty/update                controllers.Faculty.update()
+
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
