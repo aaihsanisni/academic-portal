@@ -32,16 +32,8 @@ public class Students extends Controller {
 	}
 	// Returns all the students and their details
     public static Result view() {
-    	MongoClient mongoClient = null;
-    	try {
-			mongoClient = new MongoClient(Play.application().configuration().
-					getString("mongo.address"), Play.application().configuration().getInt("mongo.port"));
-		} catch (UnknownHostException e) {
-			Logger.error("Unable to connect to the fucking database.");
-		//	e.printStackTrace(e);
-		}
     	BasicDBList returnList = new BasicDBList();
-    	DB db = mongoClient.getDB("acad");
+    	DB db = Application.acadDB();
     	DBCollection studentCol = db.getCollection(Play.application().configuration().getString("mongo.students"));
     	DBCursor cur = studentCol.find();
     	while(cur.hasNext()) {
@@ -63,17 +55,8 @@ public class Students extends Controller {
     	}
     	ViewStudentForm formData = params.get();
     	String studentID = formData.name;
-    	
-    	MongoClient mongoclient = null;
-    	try {
-			mongoclient = new MongoClient(Play.application().configuration().getString("mongo.address"),
-					Play.application().configuration().getInt("mongo.port"));
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	DB db = mongoclient.getDB("acad");
+
+    	DB db =Application.acadDB();
     	DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.students"));
     	DBCursor cursor = col.find(new BasicDBObject("name", studentID));
     	BasicDBList retList = new BasicDBList();
@@ -87,7 +70,6 @@ public class Students extends Controller {
     	
     }
     
-    // Params: name and dept
     public static Result add() {
     	Form<AddForm> params = Form.form(AddForm.class).bindFromRequest();
     	if (params.hasErrors()) {
@@ -97,16 +79,7 @@ public class Students extends Controller {
     	AddForm addData = params.get();
     	Logger.info("Entry" + addData.entryno + "Name:" + addData.name + " Dept:" + addData.dept);
     	
-    	MongoClient mongoclient = null;
-    	try {
-			mongoclient = new MongoClient(Play.application().configuration().getString("mongo.address"),
-					Play.application().configuration().getInt("mongo.port"));
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	DB db = mongoclient.getDB("acad");
+    	DB db = Application.acadDB();
     	DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.students"));
     	BasicDBObject obj = new BasicDBObject().append("entryno", addData.entryno)
 				.append("name", addData.name)
@@ -127,16 +100,7 @@ public class Students extends Controller {
     	DeleteForm formData = params.get();
     	String studentID = formData.entryno;
     	
-    	MongoClient mongoclient = null;
-    	try {
-			mongoclient = new MongoClient(Play.application().configuration().getString("mongo.address"),
-					Play.application().configuration().getInt("mongo.port"));
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	DB db = mongoclient.getDB("acad");
+    	DB db = Application.acadDB();
     	DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.students"));
     	col.remove(new BasicDBObject("entryno",studentID));
     	return ok("Success");
