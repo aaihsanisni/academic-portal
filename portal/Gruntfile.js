@@ -83,7 +83,29 @@ module.exports = function (grunt) {
         port: 9001,
         https: false,
         xforward: false
-      }],
+      },
+      {
+        context: '/faculty',
+        host: '0.0.0.0',
+        port: 9001,
+        https: false,
+        xforward: false        
+      },
+      {
+        context: '/course',
+        host: '0.0.0.0',
+        port: 9001,
+        https: false,
+        xforward: false                
+      },
+      {
+        context: '/admin',
+        host: '0.0.0.0',
+        port: 9001,
+        https: false,
+        xforward: false                
+      }
+      ],
       basic:{
         options: {
           open: true,

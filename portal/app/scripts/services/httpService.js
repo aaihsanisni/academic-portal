@@ -12,7 +12,7 @@ angular.module('portalApp')
     // AngularJS will instantiate a singleton by calling "new" on this function
     return {
 
-    	studentsView: function() {
+    studentsView: function() {
     	return $http({
     		method: 'GET',
     		url: '/students/'
@@ -52,6 +52,117 @@ angular.module('portalApp')
     	}, function(err) {
     		console.log("Query failed for deleting student " + err);
     	});
+    },
+
+    facultyView: function() {
+        return $http({
+            method: 'GET',
+            url: '/faculty/'
+        }).then(function(response) {
+            return response.data;
+        }, function(err) {
+            console.log("Query failed for viewing faculty " + err);
+        });
+    },
+
+    addFaculty: function(id, name, dept) {
+        return $http({
+            method:'GET',
+            url:'/faculty/add',
+            params: {
+                id:id,
+                name:name,
+                dept:dept
+            }
+        }).then(function(resp) {
+            return resp.data;
+        }, function(err) {
+            console.log("Query failed for adding faculty " + err);
+        });
+    },
+
+
+    deleteFaculty: function(id) {
+        return $http({
+            method:'GET',
+            url:'/faculty/delete',
+            params: {
+                id:id
+            }
+        }).then(function(resp) {
+            return resp.data;
+        }, function(err) {
+            console.log("Query failed for deleting faculty " + err);
+        });
+    },
+
+    courseView: function() {
+        return $http({
+            method: 'GET',
+            url: '/course/'
+        }).then(function(response) {
+            return response.data;
+        }, function(err) {
+            console.log("Query failed for viewing faculty " + err);
+        });
+    },
+
+    addCourse: function(id, name, dept) {
+        return $http({
+            method:'GET',
+            url:'/course/add',
+            params: {
+                id:id,
+                name:name,
+                dept:dept
+            }
+        }).then(function(resp) {
+            return resp.data;
+        }, function(err) {
+            console.log("Query failed for adding course " + err);
+        });
+    },
+
+
+    deleteCourse: function(id) {
+        return $http({
+            method:'GET',
+            url:'/course/delete',
+            params: {
+                id:id
+            }
+        }).then(function(resp) {
+            return resp.data;
+        }, function(err) {
+            console.log("Query failed for deleting course " + err);
+        });
+    },
+
+    courseOfferingData: function(id) {
+        return $http({
+            method:'GET',
+            url:'/admin/courseOfferingData'
+        }).then(function(resp) {
+            return resp.data;
+        }, function(err) {
+            console.log("Error while loading course offering");
+        });
+    },
+
+    courseOfferingDetails: function(course_id, faculty_id) {
+        return $http({
+            method:'GET',
+            url:'/admin/courseOfferingDetails',
+            params: {
+                course_id:course_id,
+                faculty_id:faculty_id
+            }
+        }).then(function(resp) {
+            return resp.data;
+        }, function(err) {
+            console.log("Error while getting course offering for " + course_id +  " " + faculty_id);
+        });
     }
+
 };
 });
