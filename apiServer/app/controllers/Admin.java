@@ -1,6 +1,7 @@
 package controllers;
 
 import java.net.UnknownHostException;
+import java.sql.ResultSet;
 
 import play.*;
 import play.data.Form;
@@ -27,7 +28,19 @@ public class Admin extends Controller{
     public static class CourseOfferingForm {
         public String course_id;
         public String faculty_id;
-    }
+    };
+
+    public static class RegisterStudentForm{
+        public String entryno;
+        public String course_id;
+    };
+
+
+    public static class RegisterCourseOffering{
+        public String faculty_id;
+        public String course_id;
+        public String course_limit;
+    };
 
     public static Result courseOfferingData() {
         BasicDBList returnList = new BasicDBList();
@@ -42,9 +55,11 @@ public class Admin extends Controller{
             BasicDBObject facultyObj = (BasicDBObject)facultyCol.findOne(new BasicDBObject("id", obj.get("faculty_id")));
             BasicDBObject toAdd = new BasicDBObject("course_id", obj.get("course_id"))
                     .append("faculty_id", obj.get("faculty_id"))
-                    .append("course_registered", obj.get("course_registered"))
                     .append("course_limit", obj.get("course_limit"))
                     .append("faculty_name", facultyObj.get("name"));
+
+            // TODO Registered student will be counted using the student list.
+
             returnList.add(toAdd);
             Logger.info("Adding " + toAdd);
         }
@@ -75,5 +90,71 @@ public class Admin extends Controller{
 
         Logger.info("Adding " + obj.toString());
         return ok(obj.toString());
+    }
+
+    public static Result registerCourseOffering() {
+        Form<RegisterCourseOffering> params = Form.form(RegisterCourseOffering.class).bindFromRequest();
+        if (params.hasErrors()) {
+            Logger.error("Bad Request");
+            return badRequest();
+        }
+        RegisterCourseOffering formData = params.get();
+        DB db = Application.acadDB();
+
+        // Check if there is a course by the name.
+        DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.course"));
+        BasicDBObject courseObj = (BasicDBObject)col.findOne(new BasicDBObject("id", formData.course_id));
+        BasicDBObject toRet = new BasicDBObject();
+        if (courseObj == null) {
+            toRet.append("error", "There is no such course.");
+            Logger.error("No such course " + formData.course_id);
+            return badRequest(toRet.toString());
+        }
+
+        // Check if faculty exists.
+        DBCollection facultyCol = db.getCollection(Play.application().configuration().getString("mongo.faculty"));
+        BasicDBObject facultyObj = (BasicDBObject)facultyCol.findOne(new BasicDBObject("id", formData.faculty_id));
+        if (facultyObj == null) {
+            toRet.append("error", "There is no such faculty.");
+            Logger.error("No such faculty " + formData.faculty_id);
+            return badRequest(toRet.toString());
+        }
+
+        DBCollection courseOfferingCol = db.getCollection(Play.application().configuration().
+                getString("mongo.course_offering"));
+        String emptyArray [] = {};
+        courseOfferingCol.insert(new BasicDBObject("faculty_id", formData.faculty_id)
+                .append("course_id", formData.course_id)
+                .append("course_limit", formData.course_limit)
+                .append("students", emptyArray));
+        return ok();
+    }
+
+    public static Result registerStudent() {
+        Form<RegisterStudentForm> params = Form.form(RegisterStudentForm.class).bindFromRequest();
+        if (params.hasErrors()) {
+            Logger.error("Bad Request");
+            return badRequest();
+        }
+        RegisterStudentForm formData = params.get();
+        String entryno = formData.entryno;
+        String course_id = formData.course_id;
+
+        // Confirm that the course is being offered.
+        DB db = Application.acadDB();
+        DBCollection courseOfferingCol = db.getCollection(Play.application().configuration()
+        .getString("mongo.course_offering"));
+        BasicDBObject courseObj = (BasicDBObject)courseOfferingCol.findOne(new BasicDBObject("course_id", course_id));
+        BasicDBObject toRet = new BasicDBObject();
+        if (courseObj == null) {
+            toRet.append("error", "Course is not being offered.");
+            Logger.error("Course not offered " + course_id);
+            return badRequest(toRet.toString());
+        }
+
+        // TODO update the student's courses list.
+
+        // TODO update the courseOffering list.
+        return ok();
     }
 }

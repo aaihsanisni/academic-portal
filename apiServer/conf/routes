@@ -25,5 +25,8 @@ GET /faculty/update                controllers.Faculty.update()
 
 GET /admin/courseOfferingData       controllers.Admin.courseOfferingData()
 GET /admin/courseOfferingDetails    controllers.Admin.courseOfferingDetails()
+GET /admin/registerStudent          controllers.Admin.registerStudent()
+GET /admin/registerCourseOffering          controllers.Admin.registerCourseOffering()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

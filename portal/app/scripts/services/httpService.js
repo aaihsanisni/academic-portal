@@ -162,6 +162,38 @@ angular.module('portalApp')
         }, function(err) {
             console.log("Error while getting course offering for " + course_id +  " " + faculty_id);
         });
+    },
+
+    registerStudent: function(entryno, course_id) {
+        return $http({
+            method:'GET',
+            url:'/admin/registerStudent',
+            params: {
+                entryno:entryno,
+                course_id:course_id
+            }
+        }).then(function(resp) {
+            return resp.data;
+        }, function(err) {
+            console.log("Error while registering student " + err.data.error);
+            return err;
+        });
+    },
+
+    registerCourseOffering: function(id, course_id, course_limit) {
+        return $http({
+            method:'GET',
+            url:'/admin/registerCourseOffering',
+            params: {
+                faculty_id:id,
+                course_id:course_id,
+                course_limit:course_limit
+            }
+        }).then(function(resp) {
+            return resp.data;
+        }, function(err) {
+            console.log("Error while registering course offering " + err.data.error);
+        });
     }
 
 };
