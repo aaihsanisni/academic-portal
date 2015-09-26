@@ -20,28 +20,33 @@ angular.module('portalApp')
     $scope.view();
 
     $scope.showCourse = function(item) {
- 		var courseData = $modal.open({
-  			animation:$scope.animationsEnabled,
-  			templateUrl:'courseDetail.html',
-  			controller:'courseDetailCtrl',
-  			resolve: {
-  				courseData: function() {
-  					var courseData = [];
-  					console.log("Getting course data for " + item.course_id + " " + item.faculty_id);
-  					httpService.courseOfferingDetails(item.course_id, item.faculty_id)
-  					.then(function(resp) {
-  						courseData = resp;
-              return courseData;
-  					});
-  				}
-  			}
-  		});
+    var courseData = [];
+    console.log("Getting course data for " + item.course_id + " " + item.faculty_id);
+    httpService.courseOfferingDetails(item.course_id, item.faculty_id)
+    .then(function(resp) {
+      courseData = resp;
+      console.log("course data is ")
+      console.log(courseData);
 
-	    courseData.result.then(function () {
-	  		$scope.view();
-	    }, function () {
-	      console.log('Modal dismissed at: ' + new Date());
-	    });
+      var courseData = $modal.open({
+      animation:$scope.animationsEnabled,
+      templateUrl:'courseDetail.html',
+      controller:'courseDetailCtrl',
+      resolve: {
+      courseData: function() {
+          return courseData;
+      }
+      }
+      });
+
+      courseData.result.then(function () {
+      $scope.view();
+      }, function () {
+      console.log('Modal dismissed at: ' + new Date());
+      });
+    });
+
+
   	};
 
     $scope.registerStudent = function() {
@@ -94,6 +99,10 @@ angular.module('portalApp')
   angular.module('portalApp')
   .controller('courseDetailCtrl', function ($scope, $modalInstance, courseData) {
     $scope.tableData = courseData;
+                  console.log($scope.tableData);
+                                console.log(courseData);
+
+
   $scope.ok = function (addCourse) {
     $modalInstance.close(addCourse);
   };

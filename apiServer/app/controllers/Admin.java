@@ -2,12 +2,22 @@ package controllers;
 
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
+import java.util.*;
+
+// import com.mongodb.client.AggregateIterable;
+// import org.bson.Document;
+
+import static java.util.Arrays.asList;
 
 import play.*;
 import play.data.Form;
 import play.data.DynamicForm;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.*;
+
 import play.mvc.*;
+import service.MongoQueryEngine;
 import sun.io.ByteToCharDBCS_ASCII;
 import views.html.*;
 import akka.io.Tcp.Bind;
@@ -58,8 +68,21 @@ public class Admin extends Controller{
                     .append("course_limit", obj.get("course_limit"))
                     .append("faculty_name", facultyObj.get("name"));
 
-            // TODO Registered student will be counted using the student list.
+            AggregationOutput aggregationOutput = courseOfferingCol.aggregate(
+                    new BasicDBObject("$match", new BasicDBObject("course_id", obj.get("course_id"))
+                                                .append("faculty_id", obj.get("faculty_id"))),
+                    new BasicDBObject("$project", new BasicDBObject("count",
+                            new BasicDBObject("$size", "$students")))
+            );
 
+            Iterable<DBObject> list= aggregationOutput.results();
+
+            if(list.iterator().hasNext()) {
+                toAdd.append("course_registered", list.iterator().next().get("count"));
+            } else {
+                toAdd.append("course_registered", "---");
+
+            }
             returnList.add(toAdd);
             Logger.info("Adding " + toAdd);
         }
@@ -86,10 +109,25 @@ public class Admin extends Controller{
             return notFound();
         }
 
+        BasicDBList retList = new BasicDBList();
         // Create an array of students and their names who are doing this course.
-
-        Logger.info("Adding " + obj.toString());
-        return ok(obj.toString());
+        ListIterator<Object> studentsList = ((BasicDBList) obj.get("students")).listIterator();
+        while(studentsList.hasNext()) {
+            Object nextItem = studentsList.next();
+            Logger.info("Entry no "  + nextItem.toString());
+            BasicDBObject studentObj = (BasicDBObject) col.findOne(
+                    new BasicDBObject("entryno", nextItem.toString())
+            );
+            if (studentObj != null) {
+                retList.add(new BasicDBObject("entryno", nextItem.toString())
+                        .append("name", studentObj.get("name")));
+            } else {
+                retList.add(new BasicDBObject("entryno", nextItem.toString())
+                .append("name", "---"));
+            }
+            Logger.info("Adding " + retList.toString());
+        }
+        return ok(retList.toString());
     }
 
     public static Result registerCourseOffering() {
@@ -142,6 +180,8 @@ public class Admin extends Controller{
 
         // Confirm that the course is being offered.
         DB db = Application.acadDB();
+        DBCollection col = db.getCollection(Play.application().configuration()
+                .getString("mongo.students"));
         DBCollection courseOfferingCol = db.getCollection(Play.application().configuration()
         .getString("mongo.course_offering"));
         BasicDBObject courseObj = (BasicDBObject)courseOfferingCol.findOne(new BasicDBObject("course_id", course_id));
@@ -152,9 +192,32 @@ public class Admin extends Controller{
             return badRequest(toRet.toString());
         }
 
-        // TODO update the student's courses list.
+        int studentLimit = Integer.parseInt(courseObj.get("course_limit").toString());
+        int registeredStudents = 0;
+        AggregationOutput aggregationOutput = courseOfferingCol.aggregate(
+                new BasicDBObject("$match", new BasicDBObject("course_id", courseObj.get("course_id"))
+                        .append("faculty_id", courseObj.get("faculty_id"))),
+                new BasicDBObject("$project", new BasicDBObject("count",
+                        new BasicDBObject("$size", "$students")))
+        );
 
-        // TODO update the courseOffering list.
+        Iterable<DBObject> list= aggregationOutput.results();
+
+        if(list.iterator().hasNext()) {
+            registeredStudents = Integer.parseInt(list.iterator().next().get("count").toString());
+        }
+        if (registeredStudents >= studentLimit)
+            return ok("Student Limit reached");
+
+        col.update(
+                new BasicDBObject("entryno", entryno),
+                new BasicDBObject("$push", new BasicDBObject("courses", course_id))
+        );
+
+        courseOfferingCol.update(
+                new BasicDBObject("course_id", course_id),
+                new BasicDBObject("$push", new BasicDBObject("students", entryno))
+        );
         return ok();
     }
 }

@@ -40,7 +40,8 @@ public class Students extends Controller {
     		BasicDBObject obj = (BasicDBObject) cur.next();
     		BasicDBObject toAdd = new BasicDBObject("entryno", obj.get("entryno"))
     				.append("name", obj.get("name"))
-					.append("dept", obj.get("dept"));
+					.append("dept", obj.get("dept"))
+					.append("courses", obj.get("courses"));
     		returnList.add(toAdd);
     		Logger.info("Adding " + toAdd);
     	}
@@ -60,11 +61,13 @@ public class Students extends Controller {
     	DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.students"));
     	DBCursor cursor = col.find(new BasicDBObject("entryno", studentID));
     	BasicDBList retList = new BasicDBList();
+
     	while(cursor.hasNext()) {
     		BasicDBObject obj = (BasicDBObject) cursor.next();
     		retList.add(new BasicDBObject("entryno", obj.get("entryno"))
 					.append("name", obj.get("name"))
-    				.append("dept", obj.get("dept")));
+    				.append("dept", obj.get("dept"))
+					.append("courses", obj.get("courses")));
     	}
     	
     	return ok(retList.toString());
@@ -82,9 +85,11 @@ public class Students extends Controller {
     	
     	DB db = Application.acadDB();
     	DBCollection col = db.getCollection(Play.application().configuration().getString("mongo.students"));
-    	BasicDBObject obj = new BasicDBObject().append("entryno", addData.entryno)
+		String emptyArray [] = {};
+		BasicDBObject obj = new BasicDBObject().append("entryno", addData.entryno)
 				.append("name", addData.name)
-    			.append("dept", addData.dept);
+    			.append("dept", addData.dept)
+				.append("courses", emptyArray);
     	//check entry before inserting...
     	col.insert(obj);
 
