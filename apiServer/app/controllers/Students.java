@@ -90,13 +90,10 @@ public class Students extends Controller {
 				.append("name", addData.name)
     			.append("dept", addData.dept)
 				.append("courses", emptyArray);
-    	//check entry before inserting...
     	col.insert(obj);
-
-		// Return all the items that have been added.
     	return ok();
     }
-    
+
     public static Result delete() {
     	Form<DeleteForm> params = Form.form(DeleteForm.class).bindFromRequest();
     	if (params.hasErrors()) {

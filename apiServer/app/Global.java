@@ -4,9 +4,10 @@
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import play.Application;
-import play.GlobalSettings;
-import play.Play;
+import play.*;
+import play.mvc.*;
+import play.mvc.Http.Request;
+import java.lang.reflect.Method;
 
 public class Global extends GlobalSettings{
 
@@ -23,4 +24,9 @@ public class Global extends GlobalSettings{
         return applicationContext.getBean(type);
     }
 
+    @Override
+    public Action onRequest(Request request, Method actionMethod) {
+        System.out.println("before each request..." + request.toString());
+        return super.onRequest(request, actionMethod);
+    }
 }
